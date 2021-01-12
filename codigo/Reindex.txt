@@ -1,0 +1,27 @@
+Reindex
+
+Convert to geo_point
+
+PUT new_edem
+{ 
+  "mappings": { 
+     "properties" : { 
+        "location" : { 
+           "type" : "geo_point" 
+         } 
+      } 
+    }
+ } 
+ 
+ POST _reindex
+{
+  "source": {
+    "index": "edem"
+  },
+  "dest": {
+    "index": "new_edem"
+  },
+  "script": {
+    "source": "ctx._source.location = ['lat': ctx._source.latitude, 'lon': ctx._source.longitude]"
+  }
+}
